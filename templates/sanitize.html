@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <head> 
+        <title>BTS | Amazon</title>
+        <link rel="stylesheet" type="text/css" href="static/css/style.css">
+
+        <script type="text/javascript">
+            var host = "localhost:8888"
+            var ws = new WebSocket("ws://" + host + "/ws");
+         
+            ws.onopen = function(evt)
+            {
+                // alert("socket opened client side");
+
+            }
+            ws.onclose = function(evt)
+            {
+                // alert("socket closed client side");
+            }
+            ws.onmessage = function(evt) 
+            {
+                // alert("Received message");
+                messageFromServer = evt.data;
+                messageFromServer = JSON.parse(messageFromServer);
+                messageType = messageFromServer.messageType;
+                if (messageType=="sanityResult")
+                {
+                    results = messageFromServer.result;
+                    document.getElementById('countValue').innerHTML = results.length;
+                    document.getElementById('rightTextArea').value = "";
+                    for (var i in results) {
+                        document.getElementById('rightTextArea').value += results[i] + "\n";
+                    }
+                }
+            }
+
+            function sanitize()
+            {
+                var pattern = document.getElementById('pattern').value;
+                var leftTextArea = document.getElementById('leftTextArea').value;
+                
+                var messageToServer = {messageType:"sanitize", messageData:'', 'pattern':pattern, 'leftTextArea':leftTextArea};
+                messageToServer = JSON.stringify(messageToServer);
+                ws.send(messageToServer);
+            }
+        </script>
+
+    </head>
+
+    <body>
+        <header>
+            <div id="logo">
+                <h1 class="inline"> BTS | 
+                    <img src="static/img/logo.jpg" style="width:15%;vertical-align: text-top;">
+                </h1>
+            </div>
+            <a href='/sanitize'>
+                <div id="container" style="background:#d3d3d3">
+                    Sanitize
+                </div>
+            </a>
+            <a href='/diffChecker'>
+                <div id="container">
+                    Check diff
+                </div>
+            </a>
+        </header>
+
+        <div id="mainblock">
+
+            <div id="left">
+                <textarea id="pattern" rows="1" placeholder="Enter pattern here" ></textarea>
+                <textarea id="leftTextArea" rows="30" placeholder="Enter text here"></textarea>
+            </div>
+
+            <div id = "right">
+                <p id="count"> Count : <span id="countValue"> 0 </span> </p>
+                <textarea id="rightTextArea" rows="30" disabled ></textarea>
+            </div>
+   
+        </div>
+
+        <div id="buttons">
+            <button onclick="sanitize()"> Check! </button>
+        </div>
+    </body>
+</html>

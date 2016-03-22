@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+    <head> 
+        <title>BTS | Amazon</title>
+        <link rel="stylesheet" type="text/css" href="static/css/style.css">
+         <script type="text/javascript">
+            var host = "localhost:8888"
+            var ws = new WebSocket("ws://" + host + "/ws");
+         
+            ws.onopen = function(evt)
+            {
+                // alert("socket opened client side");
+
+            }
+            ws.onclose = function(evt)
+            {
+                // alert("socket closed client side");
+            }
+            ws.onmessage = function(evt) 
+            {
+                // alert("Received message");
+                messageFromServer = evt.data;
+                messageFromServer = JSON.parse(messageFromServer);
+                messageType = messageFromServer.messageType;
+                if (messageType=="diffResult")
+                {
+                    results = messageFromServer.result;
+                    document.getElementById('presult').innerHTML = "";
+                    for (var i in results) {
+                        var j = Number(i)+1;
+                        document.getElementById('presult').innerHTML += j + ". " + results[i] + "<br/>";
+
+                    }
+                }
+            }
+
+            function finddiff()
+            {
+               alert("finddif called");
+                var original = document.getElementById('leftTextArea').value;
+                var toFind = document.getElementById('rightTextArea').value;
+                
+                var messageToServer = {messageType:"finddiff", messageData:'', 'original':original, 'toFind':toFind};
+                messageToServer = JSON.stringify(messageToServer);
+                ws.send(messageToServer);
+            }
+        </script>
+
+    </head>
+
+    <body>
+        <header>
+            <div id="logo">
+                <h1 class="inline"> BTS | 
+                    <img src="static/img/logo.jpg" style="width:15%;vertical-align: text-top;">
+                </h1>
+            </div>
+            <a href='/sanitize'>
+               <div id="container">
+                   Sanitize
+               </div>
+            </a>
+            <a href='/diffChecker'>
+               <div id="container" style="background:#d3d3d3">
+                   Check diff
+               </div>
+            </a>
+        </header>
+
+        <div id="mainblock">
+
+            <div id="left">
+                <textarea id="leftTextArea" rows="30" placeholder="Enter original text"></textarea>
+            </div>
+
+            <div id = "right">
+                <textarea id="rightTextArea" rows="30" placeholder="Enter to text to check with original text"></textarea>
+            </div>
+            <div id="results">
+                  <p id="presult">
+                     
+                  </p>
+            </div>
+        </div>
+
+        <div id="buttons">
+            <button onclick="finddiff()"> Check! </button>
+        </div>
+    </body>
+</html>

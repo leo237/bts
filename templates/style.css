@@ -1,0 +1,75 @@
+#container{
+	display: inline-block;
+	width : 200px;
+	height : 20px;
+	border: 3px solid #73AD21;
+	text-align: center;
+}
+header {
+	text-align: center;
+}
+
+#logo {
+	text-align: center;
+}
+
+.inline {
+	display : inline;
+	font-color : red;
+}
+
+#mainblock{
+	padding : 20px 20px 20px;
+	margin : 20px 20px 20px;
+	/*border: 3px solid #73AD21;*/
+}
+
+#left{
+	display : inline-block;
+	width: 45%;
+	margin-right: 3%;
+	/*border: 3px solid #73AD21;*/
+
+}
+
+#right {
+	display : inline-block;
+	width: 45%;
+	margin-left: 3%;
+	/*border: 3px solid #73AD21;*/
+}
+
+textarea {
+	margin:1%;
+	width:98%;
+	resize: vertical;
+}
+
+#buttons {
+	text-align: center;
+}
+
+button {
+	height: 30px;
+	width: 60px;
+
+}
+
+/* blue button */
+
+button {
+	background-color: #699DB6;
+	border-color: rgba(0,0,0,0.3);
+	text-shadow: 0 1px 0 rgba(0,0,0,0.5);
+	color: #FFF;
+}
+
+button:hover {
+	background-color: #4F87A2;
+	border-color: rgba(0,0,0,0.5);
+}
+
+button:active {
+	background-color: #3C677B;
+	border-color: rgba(0,0,0,0.9);
+}
